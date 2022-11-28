@@ -1,5 +1,6 @@
 module.exports = (httpServer) => {
   const { Server } = require("socket.io");
+  const { writeFile } = require("fs");
 
   const io = new Server(httpServer);
 
@@ -10,7 +11,7 @@ module.exports = (httpServer) => {
     const username = cookie.split("=").pop();
 
     // show connected users
-    io.emit("connectedUsers", {
+    socket.broadcast.emit("connectedUsers", {
       user: username,
     });
 
@@ -22,6 +23,26 @@ module.exports = (httpServer) => {
       socket.emit("myMessage", {
         user: user,
         message,
+      });
+    });
+
+    // private message
+    socket.on("privateMessage", ({ user, message, id, room }) => {
+      socket.to(id).broadcast.emit("otherPrivateMessage", {
+        user: user,
+        message,
+      });
+      socket.to(room).emit("myPrivateMessage", {
+        user: user,
+        message,
+      });
+    });
+
+    socket.on("send-files", ({ user, fileContent }) => {
+      socket.emit("receive-my-files", { user, fileContent });
+      socket.broadcast.emit("receive-files", {
+        user: user,
+          fileContent,
       });
     });
 

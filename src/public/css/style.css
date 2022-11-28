@@ -138,3 +138,22 @@ body {
   margin-left: 2.9rem;
   margin-top: -0.75rem;
 }
+
+.card-chat {
+  border-top-right-radius: 20px;
+  width: 65%;
+  border-top-left-radius: 0px;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  background: rgba(52, 58, 64, 0.05);
+}
+
+.image-container img {
+  display: inline-block;
+  width: 50px;
+  border-radius: 50px;
+}
+
+.image-upload > input {
+  display: none;
+}

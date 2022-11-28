@@ -29,28 +29,6 @@
             </div>
           </div>
           <div class="row px-3 py-2">
-            <div class="col">
-              <button
-                class="btn btn-outline-light btn-block"
-                type="button"
-                id="btnSignatureView"
-              >
-                <i class="fas fa-folder-plus"></i> Firmar Documento
-              </button>
-            </div>
-          </div>
-          <div class="row px-3 py-2">
-            <div class="col">
-              <button
-                class="btn btn-outline-info btn-block"
-                type="button"
-                id="btnVerifyView"
-              >
-                <i class="fas fa-folder-plus"></i> Verificar documento
-              </button>
-            </div>
-          </div>
-          <div class="row px-3 py-2">
             <div
               class="col"
               style="
@@ -79,20 +57,20 @@
               style="
                 overflow-y: auto;
                 height: auto;
-                max-height: calc(100vh - 220px);
+                max-height: calc(100vh - 120px);
               "
             >
               <ul class="list-unstyled mb-0" id="users-connected"></ul>
             </div>
           </div>
         </div>
-        <div class="col d-block d-sm-block d-md-block d-lg-block d-xl-block">
+        <div class="col d-none d-sm-none d-md-none d-lg-block d-xl-block">
           <div class="row">
             <div
               class="col d-flex justify-content-between align-items-lg-center align-items-xxl-center border-start border-muted"
               style="background: rgba(0, 0, 0, 0.5); height: 4rem"
             >
-              <h5 class="mr-auto my-auto text-light">Chat global</h5>
+              <h5 class="mr-auto my-auto text-light" id="username-chat"></h5>
               <button class="btn btn-outline-danger" type="button" id="logout">
                 Cerrar sesión
               </button>
@@ -108,37 +86,18 @@
             >
               <div class="d-flex flex-row h-100">
                 <div
-                  id="all-messages"
+                  id="all-private-messages"
                   class="w-100 d-flex flex-column justify-content-end"
                 ></div>
               </div>
             </div>
           </div>
-          <div
-            class="row px-3 py-2"
-            style="background: rgba(95, 107, 123, 0.2); display: none;"
-          >
-            <ul class="list-unstyled d-flex" id="selected-files">
-
-            </ul>
-          </div>
-          <div
-            class="row px-3 py-2"
-            style="background: rgba(95, 107, 123, 0.2)"
-          >
-            <div class="col-xl-1 col-sm-1 col-1">
-              <div class="image-upload h-100 d-flex align-items-center">
-                <label
-                  for="file-multiple"
-                  class="btn btn-outline-light h-100 d-flex align-items-center"
-                >
-                  <i class="fas fa-file"></i>
-                </label>
-                <input id="file-multiple" multiple type="file" />
-              </div>
-            </div>
-            <div class="col-xl-10 col-sm-10 col-10" style="padding: 0">
-              <!--<textarea class="w-100 h-100"></textarea>-->
+          <div class="row px-3 py-2" style="background: rgba(52, 58, 64, 0.2)">
+            <div
+              class="col-9 col-sm-10 col-md-10 col-lg-10 col-xl-10"
+              style="padding: 0"
+            >
+              <!--              <textarea class="w-100 h-100"></textarea>-->
               <input
                 type="text"
                 class="form-control form-control-lg"
@@ -147,14 +106,22 @@
                 placeholder="Escribe un mensaje"
               />
             </div>
-            <div class="col-xl-1 col-sm-1 col-1">
+            <div
+              class="col-3 col-sm-2 col-md-2 col-lg-2 col-xl-2 text-nowrap d-md-flex justify-content-md-end p-0"
+            >
               <button
-                class="btn btn-light h-100 m-auto"
+                class="btn h-100 mx-auto"
                 type="button"
-                id="send-message"
                 style="border-radius: 10px"
               >
-                <i class="fa fa-paper-plane"></i>
+                <i class="far fa-image"></i></button
+              ><button
+                class="btn btn-light h-100 w-auto"
+                type="button"
+                id="send-private-message"
+                style="border-radius: 10px"
+              >
+                <i class="fab fa-telegram-plane"></i>
               </button>
             </div>
           </div>
@@ -162,9 +129,15 @@
       </div>
     </div>
 
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.11.0/qs.min.js"
+      integrity="sha512-/l6vieC+YxaZywUhmqs++8uF9DeMvJE61ua5g+UK0TuHZ4TkTgB1Gm1n0NiA86uEOM9JJ6JUwyR0hboKO0fCng=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
     <script src="/assets/bootstrap/js/mdb.min.js"></script>
     <script src="/js/logout.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/js/generalChat.js"></script>
+    <script src="/js/privateChat.js"></script>
   </body>
 </html>

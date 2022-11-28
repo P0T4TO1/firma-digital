@@ -8,7 +8,11 @@ btnLogin.addEventListener("click", () => {
     document.cookie = `room=${room.value}`;
     document.location.href = "/";
   } else {
-    alert("Please fill in all the fields");
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Por favor, llena todos los campos",
+    });
   }
 });
 
@@ -20,7 +24,11 @@ username.addEventListener("keypress", (e) => {
       document.cookie = `room=${room.value}`;
       document.location.href = "/";
     } else {
-      alert("Please fill in all the fields");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Por favor, llena todos los campos",
+      });
     }
   }
 });
@@ -33,7 +41,11 @@ room.addEventListener("keypress", (e) => {
       document.cookie = `room=${room.value}`;
       document.location.href = "/";
     } else {
-      alert("Please fill in all the fields");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Por favor, llena todos los campos",
+      });
     }
   }
 });

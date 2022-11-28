@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/assets/bootstrap/css/mdb.min.css" />
+    <link rel="shortcut icon" href="/images/firma-digital.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+      integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <title>Firma digital | Verficar</title>
+  </head>
+  <body>
+    <main>
+      <nav class="navbar navbar-light" style="background: rgba(0, 0, 0, 0.5)">
+        <div class="container-fluid d-flex justify-content-between">
+          <a class="navbar-brand" href="#">
+            <img
+              src="/images/firma-digital.png"
+              class="me-2"
+              height="25"
+              alt="MDB Logo"
+              loading="lazy"
+            />
+            <small class="text-light">Firma digital</small>
+            <a href="/" class="btn btn-outline-light"> Chat </a>
+          </a>
+          <button class="btn btn-outline-danger" type="button" id="logout">
+            Cerrar sesión
+          </button>
+        </div>
+      </nav>
+
+      <h2 class="text-center mt-3 text-light">Verificar Documento</h2>
+      <hr />
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <div class="row">
+              <div class="col">
+                <form class="mb-4 d-flex flex-column">
+                  <div class="mb-4">
+                    <label for="publicKeyInput" class="form-label text-light"
+                      >Llave pública</label
+                    >
+                    <textarea
+                      class="form-control"
+                      id="publicKeyInput"
+                      rows="3"
+                      placeholder="Llave pública"
+                      style="background: transparent; color: white"
+                    ></textarea>
+                  </div>
+
+                  <div class="mb-4">
+                    <label for="signatureInput" class="form-label text-light"
+                      >Firmal digital</label
+                    >
+                    <textarea
+                      class="form-control"
+                      id="signatureInput"
+                      rows="3"
+                      placeholder="Firmal digital"
+                      style="background: transparent; color: white"
+                    ></textarea>
+                  </div>
+
+                  <label class="form-label text-light mt-4" for="inputFile"
+                    >Inserte el docuemento que desea verificar</label
+                  >
+                  <input type="file" class="form-control" id="inputFile" />
+                  <button
+                    class="btn btn-outline-info mt-4 w-50 align-self-center"
+                    type="button"
+                    id="btnVerify"
+                  >
+                    Verificar documento
+                  </button>
+                </form>
+                <div>
+                  <p id="data"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/assets/bootstrap/js/sweetalert2.all.min.js"></script>
+    <script src="/assets/bootstrap/js/mdb.min.js"></script>
+    <script src="/js/logout.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/verify.js"></script>
+  </body>
+</html>
