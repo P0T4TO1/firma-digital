@@ -38,11 +38,13 @@ module.exports = (httpServer) => {
       });
     });
 
-    socket.on("send-files", ({ user, fileContent }) => {
+    socket.on("send-files", ({ user, fileContent, filename, fileType }) => {
       socket.emit("receive-my-files", { user, fileContent });
       socket.broadcast.emit("receive-files", {
         user: user,
-          fileContent,
+        fileContent,
+        filename,
+        fileType,
       });
     });
 

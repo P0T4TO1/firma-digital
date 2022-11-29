@@ -13,16 +13,23 @@ const username = document.cookie.replace(
   "$1"
 );
 
+let formData = new FormData();
+
 fileMultiple.addEventListener("change", (e) => {
-  // attach files to show in the chat
   const files = e.target.files[0];
-  // read files and send content to the server
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const fileContent = e.target.result;
-    socket.emit("send-files", { user: username, fileContent });
-  };
-  reader.readAsText(files);
+  const file = new File([files], files.name, { type: files.type });
+  formData.append("file", file);
+  formData.append("fileNames", files.name);
+  formData.append("fileTypes", files.type);
+  formData.set("fileNames", files.name);
+  formData.set("fileTypes", files.type);
+  formData.set("file", file);
+  socket.emit("send-files", {
+    user: username,
+    fileContent: file,
+    filename: formData.get("fileNames").toString(),
+    fileType: formData.get("fileTypes").toString(),
+  });
 });
 
 btnGoVerify.addEventListener("click", () => {
@@ -55,9 +62,45 @@ messageText.addEventListener("keypress", (e) => {
   }
 });
 
-socket.on("receive-my-files", (data) => {
+const convertBase64ToFile = (base64) => {
+  const byteCharacters = atob(base64);
+  const byteNumbers = new Array(byteCharacters.length);
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
+  }
+  const byteArray = new Uint8Array(byteNumbers);
+  return new File([byteArray], formData.get("fileNames").toString(), {
+    type: formData.get("fileTypes").toString(),
+  });
+};
+
+function downloadFile(file) {
+  const url = window.URL.createObjectURL(file);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = file.name;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
+const arrayBufferToBase64 = (buffer) => {
+  let binary = "";
+  let bytes = new Uint8Array(buffer);
+  let len = bytes.byteLength;
+  for (let i = 0; i < len; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return window.btoa(binary);
+};
+
+socket.on("receive-my-files", async (data) => {
   const { user, fileContent } = data;
-  console.log(fileContent);
+
+  const base64 = arrayBufferToBase64(fileContent);
+
+  const file = convertBase64ToFile(base64);
+
   const date = new Date();
   const hour = date.getHours().toLocaleString("en-US", {
     minimumIntegerDigits: 2,
@@ -73,7 +116,9 @@ socket.on("receive-my-files", (data) => {
                     <span class="time text-light">${time}</span>
                     <span class="username fw-semibold text-light">${user}</span>
                 </div>
-                <p class="text-light text-end"">${fileContent}</p>
+                <p class="text-light text-end"">${file.name}</p>
+                <button class="btn btn-primary btn-sm" id="${file.name}"
+                >Download</button>
             </div>
             <div class="image-container ms-2">
                 <img src="/images/fotoPerfil.jpg" alt="">
@@ -81,9 +126,24 @@ socket.on("receive-my-files", (data) => {
         </div>
     `);
   allMessages.appendChild(li);
+  const btnDownload = document.getElementById(`${file.name}`);
+  btnDownload.addEventListener("click", () => {
+    downloadFile(file);
+  });
 });
 
 socket.on("receive-files", (data) => {
+  const convertBase64ToFile = (base64) => {
+    const byteCharacters = atob(base64);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    return new File([byteArray], data.filename, {
+      type: data.fileType,
+    });
+  };
   const { user, fileContent } = data;
   const date = new Date();
   const hour = date.getHours().toLocaleString("en-US", {
@@ -93,7 +153,9 @@ socket.on("receive-files", (data) => {
     minimumIntegerDigits: 2,
   });
   const time = `${hour}:${minutes}`;
-  console.log(fileContent);
+  const base64 = arrayBufferToBase64(fileContent);
+
+  const file = convertBase64ToFile(base64);
 
   const msg = document.createRange()
     .createContextualFragment(`<div class="your-message d-flex">
@@ -105,11 +167,16 @@ socket.on("receive-files", (data) => {
                     <span class="username fw-semibold text-light">${user}</span>
                     <span class="time text-light">${time}</span>
                 </div>
-                <p class="text-light" style="max-width: 200px !important;">${fileContent}</p>
+                <p class="text-light text-end"">${file.name}</p>
+                <button class="btn btn-primary btn-sm" id="${file.name}"
+                >Download</button>
             </div>
         </div>`);
-
   allMessages.append(msg);
+  const btnDownload = document.getElementById(`${file.name}`);
+  btnDownload.addEventListener("click", () => {
+    downloadFile(file);
+  });
 });
 
 //show the others messages
@@ -209,7 +276,7 @@ socket.on("disconnectedUsers", (data) => {
   });
   const time = `${hour}:${minutes}`;
 
-  const connections = document.createRange().createContextualFragment(`
+  const disconnections = document.createRange().createContextualFragment(`
         <li class="p-2 border-bottom">
           <a href="#!" class="d-flex justify-content-between">
             <div class="d-flex flex-row">

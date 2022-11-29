@@ -42,7 +42,7 @@ router.get("/generate-key-pair", (req, res) => {
   });
 });
 
-router.post("/sign",  (req, res) => {
+router.post("/sign", (req, res) => {
   let { dataFile, privateKey } = req.body;
 
   privateKey = crypto.createPrivateKey({
@@ -79,7 +79,7 @@ router.get("/signature", isLoginIn, (req, res) => {
 });
 
 router.get("/verifySignature", isLoginIn, (req, res) => {
-    res.sendFile(views + "/verify.html");
+  res.sendFile(views + "/verify.html");
 });
 
 module.exports = router;
